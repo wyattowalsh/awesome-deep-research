@@ -1,0 +1,77 @@
+name: 🚀 Feature Request
+description: Suggest an idea for this project
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a new feature! Please fill out this form as completely as possible.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem?
+      description: A clear and concise description of what the problem is.
+      placeholder: I'm always frustrated when [...]
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+      placeholder: |
+        I would like to see [...]
+        This would help by [...]
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: A clear and concise description of any alternative solutions or features you've considered.
+      placeholder: |
+        Alternative 1: [...]
+        Alternative 2: [...]
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Feature Scope
+      description: What area of the project would this feature impact?
+      multiple: true
+      options:
+        - Core Functionality
+        - Documentation
+        - Testing
+        - CI/CD
+        - Dependencies
+        - Performance
+        - User Experience
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add any other context, code examples, or references about the feature request here.
+      placeholder: |
+        Example code:
+        ```python
+        # Your example here
+        ```
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this feature request, you agree to follow our Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true 

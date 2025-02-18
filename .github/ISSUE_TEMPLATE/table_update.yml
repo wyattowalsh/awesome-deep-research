@@ -1,0 +1,172 @@
+name: 📊 Table Update
+description: Add or update a research tool in table.csv
+title: "[Table]: "
+labels: ["data", "table-update"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing to our research tools database! Please provide detailed information about the tool you'd like to add or update.
+
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: Update Type
+      description: What type of change are you proposing?
+      options:
+        - Add new tool
+        - Update existing tool
+        - Remove tool
+        - Fix data error
+    validations:
+      required: true
+
+  - type: input
+    id: tool-name
+    attributes:
+      label: Tool Name
+      description: Name of the research tool (with URL if available)
+      placeholder: e.g., [ToolName](https://github.com/user/repo)
+    validations:
+      required: true
+
+  - type: textarea
+    id: tool-summary
+    attributes:
+      label: Tool Summary
+      description: A brief, clear description of what the tool does
+      placeholder: e.g., Advanced research automation tool with citation management
+    validations:
+      required: true
+
+  - type: dropdown
+    id: interface-type
+    attributes:
+      label: Interface Type
+      description: What type of interface does the tool provide?
+      multiple: true
+      options:
+        - CLI
+        - Python API
+        - Node.js API
+        - Web Interface
+        - ChatGPT Plugin
+        - Browser Extension
+        - Jupyter Notebook
+    validations:
+      required: true
+
+  - type: dropdown
+    id: ui-available
+    attributes:
+      label: UI Available
+      description: Does the tool have a user interface?
+      options:
+        - "Yes"
+        - "No"
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-highlights
+    attributes:
+      label: Feature Highlights
+      description: List key features (use | as separator)
+      placeholder: |
+        e.g., Iterative research loop | Asynchronous processing | Duplicate filtering
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: List main dependencies and requirements
+      placeholder: e.g., Python 3.9+, OpenAI API, BeautifulSoup
+    validations:
+      required: true
+
+  - type: textarea
+    id: setup-requirements
+    attributes:
+      label: Setup Requirements
+      description: What's needed to set up and run the tool?
+      placeholder: e.g., Python environment, API keys configuration
+    validations:
+      required: true
+
+  - type: dropdown
+    id: documentation-quality
+    attributes:
+      label: Documentation Quality
+      description: How would you rate the documentation quality?
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+
+  - type: dropdown
+    id: maintenance-status
+    attributes:
+      label: Maintenance Status
+      description: Current maintenance status of the tool
+      options:
+        - Active
+        - Maintained
+        - Research
+        - Early Stage
+    validations:
+      required: true
+
+  - type: input
+    id: key-differentiator
+    attributes:
+      label: Key Differentiator
+      description: What makes this tool unique?
+      placeholder: e.g., Combines multiple APIs with asynchronous processing
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: api-integrations
+    attributes:
+      label: API Integrations
+      description: Select all integrated APIs
+      options:
+        - label: SERPAPI
+        - label: JINA_AI
+        - label: OPENROUTER
+        - label: OPENAI
+        - label: GEMINI
+        - label: FIRECRAWL
+        - label: BING
+        - label: BRAVE
+        - label: ANTHROPIC
+
+  - type: textarea
+    id: additional-links
+    attributes:
+      label: Additional Links
+      description: Any additional relevant links (documentation, blog posts, etc.)
+      placeholder: |
+        - Documentation: https://...
+        - Blog Post: https://...
+        - Demo: https://...
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      description: Please verify the following
+      options:
+        - label: I have checked that this tool is not already in the table
+          required: true
+        - label: I have verified all information is accurate and up-to-date
+          required: true
+        - label: I have formatted the data according to the table.csv schema
+          required: true
+        - label: I understand this submission will be reviewed before being added
+          required: true 

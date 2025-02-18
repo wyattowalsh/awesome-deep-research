@@ -1,0 +1,105 @@
+name: Quality Assurance
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      python-version:
+        description: 'Python version to use for testing'
+        required: false
+        default: '3.13.2'
+        type: choice
+        options:
+          - '3.13.2'
+          - '3.13.1'
+          - '3.13.0'
+          - '3.12'
+          - '3.11'
+          - '3.10'
+          - '3.9'
+      run-all-versions:
+        description: 'Run tests on all Python versions'
+        required: false
+        default: false
+        type: boolean
+      skip-format:
+        description: 'Skip code formatting'
+        required: false
+        default: false
+        type: boolean
+      skip-lint:
+        description: 'Skip code linting'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ${{ fromJSON(github.event_name == 'workflow_dispatch' && !inputs.run-all-versions && format('["{}"]', inputs.python-version) || '["3.13.2", "3.13.1", "3.13.0", "3.12", "3.11", "3.10", "3.9"]') }}
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
+          
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          
+      - name: Cache uv dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/uv
+            ~/.cache/pip
+            .venv
+          key: ${{ runner.os }}-uv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-uv-${{ matrix.python-version }}-
+            ${{ runner.os }}-uv-
+          
+      - name: Setup environment
+        run: |
+          uv venv
+          uv pip install --upgrade pip
+          uv add .
+          uv sync
+          
+      - name: Format code
+        if: ${{ !inputs.skip-format }}
+        run: make format
+          
+      - name: Check for formatting changes
+        if: ${{ !inputs.skip-format }}
+        run: |
+          git diff --exit-code || (echo "::error::Code formatting check failed. Run 'make format' locally and commit changes" && exit 1)
+          
+      - name: Lint code
+        if: ${{ !inputs.skip-lint }}
+        run: make lint
+          
+      - name: Run tests
+        if: always()
+        run: make test
+          
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-py${{ matrix.python-version }}
+          path: |
+            logs/report.html
+            logs/coverage/**
+          retention-days: 30 
